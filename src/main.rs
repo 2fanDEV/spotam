@@ -1,6 +1,5 @@
-use std::str::pattern::StrSearcher;
-
 use color_eyre::Result;
+use crossterm::event::KeyCode;
 use ratatui::{backend::CrosstermBackend, Terminal};
 
 mod application;
@@ -23,11 +22,29 @@ fn main() -> Result<()> {
     tui.enter()?;
 
     while !app.should_quit {
-        let services_not_logged_in = app
-            .get_streaming_services()
+        let mut services_not_logged_in = app.streaming_services
             .iter()
-            .filter(|service| service.is_user_logged_in()).collect::<Vec<_>>();
-        tui.draw(&mut app)?;
+            .filter(|service| service.is_user_logged_in())
+            .collect::<Vec<_>>();
+        let x = 0; 
+        let mut y = 0;
+        // tui.draw(&mut app, 0, 0);
+        services_not_logged_in.iter().for_each(|&service| {
+            tui.draw2(service.get_name(), x, y);
+        });
+
+        match tui.events.next().unwrap() { 
+            Event::Tick => { }
+            Event::Key(key) => {
+                match key.code {
+                    KeyCode::Esc | KeyCode::Char('q') => break,
+                    _ => {}
+                }
+            }
+            _ => {}
+        }
+
+       
     }
 
     Ok(())

@@ -12,7 +12,7 @@ pub type CrosstermTerminal = ratatui::Terminal<ratatui::backend::CrosstermBacken
 
 pub struct TUI {
     terminal: CrosstermTerminal,
-    events: EventHandler,
+    pub events: EventHandler,
 }
 
 impl TUI {
@@ -58,9 +58,12 @@ impl TUI {
         Ok(())
     }
 
-    pub fn draw(&mut self,  app: &mut Application) -> Result<()> { 
-        self.terminal.draw(|frame| ui::render(app, frame))?;
-        Ok(())
+    pub fn draw(&mut self,  app: &mut Application, x: u16, y: u16) { 
+        self.terminal.draw(|frame| ui::render(app, frame, x, y));
+    }
+
+    pub fn draw2(&mut self,  name: &str, x: u16, y: u16) { 
+        self.terminal.draw(|frame| ui::render2(name, frame, x, y));
     }
 
 }

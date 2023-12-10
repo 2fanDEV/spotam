@@ -1,9 +1,10 @@
 mod playlist;
 mod streaming_service;
 use streaming_service::StreamingService;
+
 pub struct Application {
     pub should_quit: bool,
-    streaming_services: Vec<StreamingService>,
+    pub streaming_services: Vec<StreamingService>,
 }
 
 impl Application {
@@ -18,7 +19,5 @@ impl Application {
         }
     }
 
-    pub fn get_streaming_services(&self) -> &Vec<StreamingService> { 
-        &self.streaming_services
-    }
+
 }
