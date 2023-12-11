@@ -1,15 +1,19 @@
+use std::panic::UnwindSafe;
+
 use color_eyre::Result;
-use crossterm::event::KeyCode;
+use crossterm::event::{KeyCode, KeyEvent};
 use ratatui::{backend::CrosstermBackend, Terminal};
 
 mod application;
 pub mod event;
 pub mod tui;
+pub mod update;
 mod ui;
 
 use application::Application;
 use event::{Event, EventHandler};
 use tui::TUI;
+use update::update;
 
 fn main() -> Result<()> {
     let services = ["Spotify", "Apple Music"];
@@ -33,17 +37,8 @@ fn main() -> Result<()> {
             tui.draw2(service.get_name(), x, y);
         });
 
-        match tui.events.next().unwrap() { 
-            Event::Tick => { }
-            Event::Key(key) => {
-                match key.code {
-                    KeyCode::Esc | KeyCode::Char('q') => break,
-                    _ => {}
-                }
-            }
-            _ => {}
-        }
-
+        update(&mut app, tui.events.next())?;
+        
        
     }
 

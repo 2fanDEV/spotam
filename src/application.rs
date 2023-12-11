@@ -1,6 +1,9 @@
 mod playlist;
 mod streaming_service;
+use crossterm::event::{self, KeyEvent};
 use streaming_service::StreamingService;
+
+use crate::event::Event;
 
 pub struct Application {
     pub should_quit: bool,
@@ -19,5 +22,8 @@ impl Application {
         }
     }
 
-
+    pub fn quit(&mut self) {
+        self.should_quit = true;
+    }
+  
 }
