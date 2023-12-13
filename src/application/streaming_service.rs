@@ -1,3 +1,4 @@
+#[derive(Debug, Clone)]
 pub struct StreamingService { 
     name : String, 
     logged_in: bool,

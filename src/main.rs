@@ -1,14 +1,14 @@
 use std::panic::UnwindSafe;
 
 use color_eyre::Result;
-use crossterm::event::{KeyCode, KeyEvent};
+use crossterm::{event::{KeyCode, KeyEvent}, execute, cursor::{SavePosition, MoveTo, EnableBlinking, DisableBlinking, RestorePosition}};
 use ratatui::{backend::CrosstermBackend, Terminal};
 
 mod application;
 pub mod event;
 pub mod tui;
-pub mod update;
 mod ui;
+pub mod update;
 
 use application::Application;
 use event::{Event, EventHandler};
@@ -26,21 +26,13 @@ fn main() -> Result<()> {
     tui.enter()?;
 
     while !app.should_quit {
-        let mut services_not_logged_in = app.streaming_services
-            .iter()
-            .filter(|service| service.is_user_logged_in())
-            .collect::<Vec<_>>();
-        let x = 0; 
+        let x = 0;
         let mut y = 0;
-        // tui.draw(&mut app, 0, 0);
-        services_not_logged_in.iter().for_each(|&service| {
-            tui.draw2(service.get_name(), x, y);
-        });
-
+        tui.draw(&mut app);
         update(&mut app, tui.events.next())?;
-        
-       
     }
+
+    tui.exit()?;
 
     Ok(())
 }

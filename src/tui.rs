@@ -1,4 +1,4 @@
-use std::{panic, io};
+use std::{io, panic};
 
 use color_eyre::Result;
 use crossterm::{
@@ -6,7 +6,7 @@ use crossterm::{
     terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-use crate::{event::EventHandler, application::Application, ui};
+use crate::{application::Application, event::EventHandler, ui};
 
 pub type CrosstermTerminal = ratatui::Terminal<ratatui::backend::CrosstermBackend<std::io::Stderr>>;
 
@@ -22,11 +22,7 @@ impl TUI {
 
     pub fn enter(&mut self) -> Result<()> {
         terminal::enable_raw_mode()?;
-        crossterm::execute!(
-            io::stderr(),
-            EnterAlternateScreen,
-            EnableMouseCapture
-        )?;
+        crossterm::execute!(io::stderr(), EnterAlternateScreen, EnableMouseCapture)?;
 
         // Define a custom panic hook to reset the terminal properties.
         // This way, you won't have your terminal messed up if an unexpected error happens.
@@ -43,29 +39,34 @@ impl TUI {
 
     fn reset() -> Result<()> {
         terminal::disable_raw_mode()?;
-        crossterm::execute!(
-            io::stderr(),
-            LeaveAlternateScreen,
-            DisableMouseCapture
-        )?;
+        crossterm::execute!(io::stderr(), LeaveAlternateScreen, DisableMouseCapture)?;
         Ok(())
     }
 
-    pub fn exit(&mut self) -> Result<()>{
+    pub fn exit(&mut self) -> Result<()> {
         Self::reset()?;
         self.terminal.show_cursor()?;
         self.terminal.clear()?;
         Ok(())
     }
 
-    pub fn draw(&mut self,  app: &mut Application, x: u16, y: u16) { 
-        self.terminal.draw(|frame| ui::render(app, frame, x, y));
+    pub fn draw(&mut self, app: &mut Application) -> Result<()> {
+        let t_vec = app
+            .streaming_services
+            .iter()
+            .filter(|x| !x.is_user_logged_in())
+            .map(|x| x.get_name())
+            .collect::<Vec<&str>>();
+        match app.streaming_services.len() {
+            2 => {
+                self.terminal
+                    .draw(|frame| ui::render_streaming_service_selection_screen(t_vec, frame));
+            }
+            _ => {
+                unimplemented!("Not implemented yet");
+            }
+        }
+        //self.terminal.draw(|frame| ui::render(app, frame));
+        Ok(())
     }
-
-    pub fn draw2(&mut self,  name: &str, x: u16, y: u16) { 
-        self.terminal.draw(|frame| ui::render2(name, frame, x, y));
-    }
-
 }
-
-
