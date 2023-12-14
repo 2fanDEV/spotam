@@ -18,13 +18,13 @@ pub fn render_streaming_service_selection_screen(services: Vec<&str>, frame: &mu
         ))
     });
 
-    // let x = List::new(list).block(
-    //     Block::default()
-    //         .borders(Borders::ALL)
-    //         .title("Streaming Services")
-    //         .title_alignment(ratatui::layout::Alignment::Center),
-    //     );
-
+    let x = List::new(list).block(
+        Block::default()
+            .borders(Borders::ALL)
+            .title("Streaming Services")
+            .title_alignment(ratatui::layout::Alignment::Center),
+        );
+    frame.set_cursor(5, 5);
     frame.render_widget(
         x,
         Rect::new(0, 0, frame.size().width / 4, frame.size().height / 3),
