@@ -3,12 +3,12 @@ mod streaming_service;
 use crossterm::event::{self, KeyEvent};
 use streaming_service::StreamingService;
 
-use crate::event::Event;
 
 #[derive(Debug)]
 pub struct Application {
     pub should_quit: bool,
     pub streaming_services: Vec<StreamingService>,
+    pub state: [u8; 2],
 }
 
 impl Application {
@@ -19,7 +19,16 @@ impl Application {
         Self {
             should_quit: false,
             streaming_services: services,
+            state: [0,0]
         }
+    }
+
+    pub fn get_state(&self) -> [u8; 2] {
+        self.state
+    }
+
+    pub fn set_state(&mut self, state: [u8; 2]) {
+        self.state = state;
     }
 
     pub fn quit(&mut self) {

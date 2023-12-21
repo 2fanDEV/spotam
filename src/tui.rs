@@ -60,7 +60,7 @@ impl TUI {
         match app.streaming_services.len() {
             2 => {
                 self.terminal
-                    .draw(|frame| ui::render_streaming_service_selection_screen(t_vec, frame));
+                    .draw(|frame| ui::render_streaming_service_selection_screen(t_vec, frame, app.get_state()));
             }
             _ => {
                 unimplemented!("Not implemented yet");
