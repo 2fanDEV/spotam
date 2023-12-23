@@ -1,7 +1,7 @@
 use std::panic::UnwindSafe;
 
 use color_eyre::Result;
-use crossterm::{event::{KeyCode, KeyEvent}, execute, cursor::{SavePosition, MoveTo, EnableBlinking, DisableBlinking, RestorePosition}};
+use crossterm::{event::{KeyCode, KeyEvent}};
 use ratatui::{backend::CrosstermBackend, Terminal};
 
 mod application;
@@ -9,6 +9,7 @@ pub mod event;
 pub mod tui;
 mod ui;
 pub mod update;
+pub mod ui_layout;
 
 use application::Application;
 use event::{Event, EventHandler};

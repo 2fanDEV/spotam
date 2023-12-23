@@ -51,22 +51,7 @@ impl TUI {
     }
 
     pub fn draw(&mut self, app: &mut Application) -> Result<()> {
-        let t_vec = app
-            .streaming_services
-            .iter()
-            .filter(|x| !x.is_user_logged_in())
-            .map(|x| x.get_name())
-            .collect::<Vec<&str>>();
-        match app.streaming_services.len() {
-            2 => {
-                self.terminal
-                    .draw(|frame| ui::render_streaming_service_selection_screen(t_vec, frame, app.get_state()));
-            }
-            _ => {
-                unimplemented!("Not implemented yet");
-            }
-        }
-        //self.terminal.draw(|frame| ui::render(app, frame));
+        self.terminal.draw(|frame| ui::render(app, frame));
         Ok(())
     }
 }
