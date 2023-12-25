@@ -46,14 +46,15 @@ pub fn ui_layout_selection_login_application(
         .iter()
         .map(|x| {
             let mut line = Line::from(Span::styled(*x, {
-                if i == 0 {
+                if i == application.navigation.y  {
                     Style::default()
                         .add_modifier(Modifier::BOLD)
                         .bg(Color::White)
                 } else {
-                    Style::default().add_modifier(Modifier::REVERSED)
+                    Style::default().add_modifier(Modifier::DIM)
                 }
             }));
+            i = i+1;
             line
         })
         .collect::<Vec<Line>>();

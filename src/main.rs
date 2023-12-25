@@ -14,9 +14,11 @@ pub mod ui_layout;
 use application::Application;
 use event::{Event, EventHandler};
 use tui::TUI;
+use dotenv::dotenv;
 use update::update;
 
 fn main() -> Result<()> {
+    dotenv().ok();
     let services = ["Spotify", "Apple Music"];
     let mut app = Application::new(services.to_vec());
 

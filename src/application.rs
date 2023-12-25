@@ -5,6 +5,11 @@ use std::env;
 use ratatui::layout::{Direction, Layout, Rect};
 use streaming_service::StreamingService;
 
+pub enum DisplayState { 
+    Login,
+    Main
+    
+}
 
 #[derive(Debug)]
 pub struct Navigation { 
@@ -56,7 +61,7 @@ impl Application {
         Self {
             should_quit: false,
             streaming_services: services,
-            navigation: Navigation { x: 0, y: 0, limit_x:0, limit_y:0},
+            navigation: Navigation { x: 0, y: 0, limit_x:1, limit_y:1},
         }
     }
 
